@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: hospital
+  datasource:
+    url: jdbc:postgresql://localhost:5432/admin
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        # noinspection undefined
+        format_sql: true
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security:
+#          trace
+
+config:
+  security:
+    token-first-index: 7
+    secret-key:
+      5b1973e61feab8c503d02380dafac6e2b4d9c44a5415ea6d03bea77804f2dc50
+    token-duration: 20
