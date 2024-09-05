@@ -1,5 +1,6 @@
 package com.etaxi.domain.driver;
 
+import com.etaxi.core.security.user.Role;
 import com.etaxi.core.security.user.User;
 import com.etaxi.core.security.user.UserService;
 import com.etaxi.domain.driver.Dto.DriverCreateRequest;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@Log
 public class DriverService {
 
     DriverRepository driverRepository;
@@ -30,13 +30,15 @@ public class DriverService {
             DriverCreateRequest driverRequest,
             Authentication authentication) {
         Driver driver = driverMapper.DriverRequestToDriver(driverRequest);
-        User user = (User) userservice.loadUserByUsername(authentication.getName());
+        User user =
+                (User) userservice.loadUserByUsername(authentication.getName());
         if (driverRequest.getTransportationTitle() != null) {
             Transportation transportation = transportationService.loadByTitle(
                     driverRequest.getTransportationTitle());
             driver.setTransportation(transportation);
         }
         driver.setUser(user);
+        user.setRole(Role.DRIVER);
         driverRepository.save(driver);
         return driverMapper.DriverToDriverResponse(driver);
     }

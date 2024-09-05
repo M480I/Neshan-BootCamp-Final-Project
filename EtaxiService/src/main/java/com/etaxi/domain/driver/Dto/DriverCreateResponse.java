@@ -12,5 +12,6 @@ public record DriverCreateResponse(
         String transportationTitle,
         String contactInfo,
         Gender gender,
-        LocationPair locationPair) {
+        LocationPair locationPair
+) {
 }

@@ -19,7 +19,7 @@ public class DriverMapper {
 
         return Driver.builder()
                 .name(driverCreateRequest.getName())
-                .gender(Gender.valueOf(driverCreateRequest.getGender()))
+                .gender(driverCreateRequest.getGender())
                 .contactInfo(driverCreateRequest.getContactInfo())
                 .location(locationMapper.locationPairToPoint(driverCreateRequest.getLocationPair()))
                 .build();

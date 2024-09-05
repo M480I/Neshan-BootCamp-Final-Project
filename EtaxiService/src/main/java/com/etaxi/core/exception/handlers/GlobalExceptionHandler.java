@@ -5,6 +5,7 @@ import com.etaxi.core.exception.EntityNotFoundException;
 import com.etaxi.core.exception.InvalidUsernameException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
@@ -17,20 +18,6 @@ import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
-    @ExceptionHandler(InvalidUsernameException.class)
-    public ResponseEntity<ApiError<String>> handleInvalidUsername(
-            InvalidUsernameException exception
-    ) {
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-        ApiError<String> apiError = new ApiError<>(
-                exception.getMessage(),
-                httpStatus.value(),
-                httpStatus.toString()
-        );
-
-        return ResponseEntity.status(httpStatus).body(apiError);
-    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError<Map<String, String>>> handleValidationException(
@@ -48,8 +35,7 @@ public class GlobalExceptionHandler {
                 ));
         ApiError<Map<String, String>> apiError = new ApiError<>(
                 errors,
-                httpStatus.value(),
-                httpStatus.toString()
+                httpStatus
         );
 
         return ResponseEntity.status(httpStatus).body(apiError);
@@ -63,8 +49,7 @@ public class GlobalExceptionHandler {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         ApiError<String> apiError = new ApiError<>(
                 exception.getMessage(),
-                httpStatus.value(),
-                httpStatus.toString()
+                httpStatus
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
@@ -76,21 +61,23 @@ public class GlobalExceptionHandler {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         ApiError<String> apiError = new ApiError<>(
                 exception.getMessage(),
-                httpStatus.value(),
-                httpStatus.toString()
+                httpStatus
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ApiError<String>> handleEntityNotFound(
-            EntityNotFoundException exception
+    @ExceptionHandler({
+            HttpMessageNotReadableException.class,
+            EntityNotFoundException.class,
+            InvalidUsernameException.class
+    })
+    public ResponseEntity<ApiError<String>> handleRuntimeExtendedExceptions(
+            RuntimeException exception
     ) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         ApiError<String> apiError = new ApiError<>(
                 exception.getMessage(),
-                httpStatus.value(),
-                httpStatus.toString()
+                httpStatus
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }

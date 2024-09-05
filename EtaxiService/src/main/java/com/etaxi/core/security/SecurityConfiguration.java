@@ -38,6 +38,7 @@ public class SecurityConfiguration {
                 {
                         registry.requestMatchers("/user/auth/**").permitAll();
                         registry.requestMatchers("/admin/**").hasRole(Role.ADMIN.name());
+                        registry.requestMatchers("/passenger/signup").hasRole(Role.NULL.name());
                         registry.requestMatchers("/passenger/**").hasRole(Role.PASSENGER.name());
                         registry.requestMatchers("/driver/signup").hasRole(Role.NULL.name());
                         registry.requestMatchers("/driver/**").hasRole(Role.DRIVER.name());
