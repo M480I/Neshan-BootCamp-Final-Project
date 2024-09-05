@@ -40,11 +40,11 @@ public class User implements UserDetails {
 
     @PrePersist
     public void prePersist() {
-        if (this.role == null) {
-            this.role = Role.NULL;
+        if (role == null) {
+            role = Role.NULL;
         }
-        if (this.dateJoined == null) {
-            this.dateJoined = LocalDateTime.now();
+        if (dateJoined == null) {
+            dateJoined = LocalDateTime.now();
         }
     }
 

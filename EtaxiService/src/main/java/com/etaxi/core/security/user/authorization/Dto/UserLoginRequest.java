@@ -1,8 +1,5 @@
-package com.etaxi.core.security.user.authorization;
+package com.etaxi.core.security.user.authorization.Dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -10,12 +7,11 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import org.springframework.validation.annotation.Validated;
 
 @Data
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserSignupRequest {
+public class UserLoginRequest {
 
     @NotBlank(message = "username is required")
     @Email(message = "username should be an email")

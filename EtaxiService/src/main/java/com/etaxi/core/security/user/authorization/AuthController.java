@@ -1,6 +1,9 @@
 package com.etaxi.core.security.user.authorization;
 
 import com.etaxi.core.security.token.JwtResponse;
+import com.etaxi.core.security.user.authorization.Dto.UserLoginRequest;
+import com.etaxi.core.security.user.authorization.Dto.UserResponse;
+import com.etaxi.core.security.user.authorization.Dto.UserSignupRequest;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/user/auth")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthController {
@@ -20,13 +23,13 @@ public class AuthController {
     AuthService authService;
 
     @PostMapping("/signup")
-    ResponseEntity<UserResponse> signup(@Valid @RequestBody UserSignupRequest user) {
-        return ResponseEntity.ok(authService.createUser(user));
+    ResponseEntity<UserResponse> signup(@Valid @RequestBody UserSignupRequest userRequest) {
+        return ResponseEntity.ok(authService.createUser(userRequest));
     }
 
     @PostMapping("/login")
-    ResponseEntity<JwtResponse> login(@Valid  @RequestBody UserLoginRequest user) {
-        return ResponseEntity.ok(authService.getJwt(user));
+    ResponseEntity<JwtResponse> login(@Valid  @RequestBody UserLoginRequest userRequest) {
+        return ResponseEntity.ok(authService.getJwt(userRequest));
     }
 
 }

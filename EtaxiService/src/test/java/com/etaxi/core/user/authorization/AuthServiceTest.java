@@ -6,17 +6,15 @@ import static org.mockito.Mockito.*;
 import com.etaxi.core.exception.InvalidUsernameException;
 import com.etaxi.core.security.token.*;
 import com.etaxi.core.security.user.User;
-import com.etaxi.core.security.user.UserMapper;
+import com.etaxi.core.security.user.authorization.Dto.AuthMapper;
 import com.etaxi.core.security.user.UserRepository;
 import com.etaxi.core.security.user.authorization.AuthService;
-import com.etaxi.core.security.user.authorization.UserLoginRequest;
-import com.etaxi.core.security.user.authorization.UserSignupRequest;
-import com.etaxi.core.security.user.authorization.UserResponse;
-import org.junit.jupiter.api.BeforeEach;
+import com.etaxi.core.security.user.authorization.Dto.UserLoginRequest;
+import com.etaxi.core.security.user.authorization.Dto.UserSignupRequest;
+import com.etaxi.core.security.user.authorization.Dto.UserResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class AuthServiceTest {
 
     @Mock
-    private UserMapper userMapper;
+    private AuthMapper authMapper;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -57,10 +55,10 @@ public class AuthServiceTest {
                 .password("password")
                 .build();
 
-        when(userMapper.signupToUser(userSignupRequest)).thenReturn(user);
+        when(authMapper.signupRequestToUser(userSignupRequest)).thenReturn(user);
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(user);
-        when(userMapper.userToSignup(any(User.class))).thenReturn(new UserResponse("testUser"));
+        when(authMapper.userToSignupResponse(any(User.class))).thenReturn(new UserResponse("testUser"));
 
         // Act
         UserResponse response = authService.createUser(userSignupRequest);
@@ -68,10 +66,10 @@ public class AuthServiceTest {
         // Assert
         assertNotNull(response);
         assertEquals(response.username(), "testUser");
-        verify(userMapper).signupToUser(userSignupRequest);
+        verify(authMapper).signupRequestToUser(userSignupRequest);
         verify(passwordEncoder).encode("password");
         verify(userRepository).save(user);
-        verify(userMapper).userToSignup(user);
+        verify(authMapper).userToSignupResponse(user);
     }
 
     @Test
@@ -83,13 +81,13 @@ public class AuthServiceTest {
                         .password("password")
                         .build();
 
-        when(userMapper.signupToUser(userSignupRequest)).thenReturn(user);
+        when(authMapper.signupRequestToUser(userSignupRequest)).thenReturn(user);
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         doThrow(new RuntimeException("Duplicate key")).when(userRepository).save(any(User.class));
 
         // Act and Assert
         assertThrows(InvalidUsernameException.class, () -> authService.createUser(userSignupRequest));
-        verify(userMapper).signupToUser(userSignupRequest);
+        verify(authMapper).signupRequestToUser(userSignupRequest);
         verify(passwordEncoder).encode("password");
         verify(userRepository).save(user);
     }
@@ -108,7 +106,7 @@ public class AuthServiceTest {
                 .thenReturn(authentication);
         when(authentication.isAuthenticated()).thenReturn(true);
         Jwt jwt = new Jwt("testToken", JwtStatus.VALID, null);
-        when(userMapper.loginToUser(any(UserLoginRequest.class))).thenReturn(user);
+        when(authMapper.loginRequestToUser(any(UserLoginRequest.class))).thenReturn(user);
         when(jwtService.generateToken(any(User.class))).thenReturn(jwt);
         JwtResponse jwtResponse = new JwtResponse("testToken", JwtStatus.VALID.name());
         when(jwtMapper.jwtToResponse(any(Jwt.class))).thenReturn(jwtResponse);

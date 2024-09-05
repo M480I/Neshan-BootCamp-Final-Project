@@ -6,8 +6,11 @@ import com.etaxi.core.security.token.JwtMapper;
 import com.etaxi.core.security.token.JwtResponse;
 import com.etaxi.core.security.token.JwtService;
 import com.etaxi.core.security.user.User;
-import com.etaxi.core.security.user.UserMapper;
+import com.etaxi.core.security.user.authorization.Dto.AuthMapper;
 import com.etaxi.core.security.user.UserRepository;
+import com.etaxi.core.security.user.authorization.Dto.UserLoginRequest;
+import com.etaxi.core.security.user.authorization.Dto.UserResponse;
+import com.etaxi.core.security.user.authorization.Dto.UserSignupRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,7 +29,7 @@ import org.springframework.stereotype.Service;
 @Log
 public class AuthService {
 
-    UserMapper userMapper;
+    AuthMapper authMapper;
     PasswordEncoder passwordEncoder;
     UserRepository userRepository;
     AuthenticationManager authenticationManager;
@@ -36,7 +39,7 @@ public class AuthService {
     public UserResponse createUser(UserSignupRequest userRequest)
             throws InvalidUsernameException {
 
-        User user = userMapper.signupToUser(userRequest);
+        User user = authMapper.signupRequestToUser(userRequest);
 
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -45,8 +48,7 @@ public class AuthService {
         catch (Exception exception) {
             throw new InvalidUsernameException("Username is Invalid");
         }
-
-        return userMapper.userToSignup(user);
+        return authMapper.userToSignupResponse(user);
     }
 
     public JwtResponse getJwt(UserLoginRequest user)
@@ -60,7 +62,7 @@ public class AuthService {
                         )
                 );
         if (authentication.isAuthenticated()) {
-            Jwt jwt = jwtService.generateToken(userMapper.loginToUser(user));
+            Jwt jwt = jwtService.generateToken(authMapper.loginRequestToUser(user));
             return jwtMapper.jwtToResponse(jwt);
         }
 
