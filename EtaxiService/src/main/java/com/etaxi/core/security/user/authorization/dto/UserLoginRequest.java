@@ -1,4 +1,4 @@
-package com.etaxi.core.security.user.authorization.Dto;
+package com.etaxi.core.security.user.authorization.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

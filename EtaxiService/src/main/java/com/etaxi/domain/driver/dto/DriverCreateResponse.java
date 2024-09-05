@@ -1,8 +1,7 @@
-package com.etaxi.domain.driver.Dto;
+package com.etaxi.domain.driver.dto;
 
 import com.etaxi.core.enums.Gender;
 import com.etaxi.core.location.LocationPair;
-import com.etaxi.domain.transportation.Transportation;
 import lombok.Builder;
 
 @Builder

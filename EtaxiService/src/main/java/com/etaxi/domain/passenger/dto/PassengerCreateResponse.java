@@ -1,4 +1,4 @@
-package com.etaxi.domain.passenger.Dto;
+package com.etaxi.domain.passenger.dto;
 
 import com.etaxi.core.enums.Gender;
 import lombok.Builder;

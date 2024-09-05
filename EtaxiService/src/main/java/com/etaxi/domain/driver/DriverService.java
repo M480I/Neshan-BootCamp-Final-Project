@@ -3,15 +3,14 @@ package com.etaxi.domain.driver;
 import com.etaxi.core.security.user.Role;
 import com.etaxi.core.security.user.User;
 import com.etaxi.core.security.user.UserService;
-import com.etaxi.domain.driver.Dto.DriverCreateRequest;
-import com.etaxi.domain.driver.Dto.DriverCreateResponse;
-import com.etaxi.domain.driver.Dto.DriverMapper;
+import com.etaxi.domain.driver.dto.DriverCreateRequest;
+import com.etaxi.domain.driver.dto.DriverCreateResponse;
+import com.etaxi.domain.driver.dto.DriverMapper;
 import com.etaxi.domain.transportation.Transportation;
 import com.etaxi.domain.transportation.TransportationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.java.Log;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 

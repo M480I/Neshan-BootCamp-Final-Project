@@ -1,9 +1,9 @@
 package com.etaxi.core.security.user.authorization;
 
 import com.etaxi.core.security.token.JwtResponse;
-import com.etaxi.core.security.user.authorization.Dto.UserLoginRequest;
-import com.etaxi.core.security.user.authorization.Dto.UserResponse;
-import com.etaxi.core.security.user.authorization.Dto.UserSignupRequest;
+import com.etaxi.core.security.user.authorization.dto.UserLoginRequest;
+import com.etaxi.core.security.user.authorization.dto.UserResponse;
+import com.etaxi.core.security.user.authorization.dto.UserSignupRequest;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

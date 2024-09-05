@@ -1,10 +1,8 @@
-package com.etaxi.domain.driver.Dto;
+package com.etaxi.domain.passenger.dto;
 
 import com.etaxi.core.enums.Gender;
-import com.etaxi.core.location.LocationPair;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,21 +11,15 @@ import lombok.experimental.FieldDefaults;
 @Data
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class DriverCreateRequest {
+public class PassengerCreateRequest {
 
     @NotBlank(message = "name can not be empty")
     String name;
 
-    String transportationTitle;
-
-    @NotBlank(message = "contactInfo can not be empty")
-    @Pattern(regexp = "^\\+98(\\d{10})$", message = "Invalid phone number")
-    String contactInfo;
-
     @NotNull(message = "gender can not be empty")
     Gender gender;
 
-    @NotNull(message = "locationPair can not be empty")
-    LocationPair locationPair;
+    @NotBlank(message = "contactInfo can not be empty")
+    String contactInfo;
 
 }

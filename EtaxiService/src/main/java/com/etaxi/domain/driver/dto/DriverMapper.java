@@ -1,6 +1,5 @@
-package com.etaxi.domain.driver.Dto;
+package com.etaxi.domain.driver.dto;
 
-import com.etaxi.core.enums.Gender;
 import com.etaxi.core.location.LocationMapper;
 import com.etaxi.domain.driver.Driver;
 import lombok.AccessLevel;

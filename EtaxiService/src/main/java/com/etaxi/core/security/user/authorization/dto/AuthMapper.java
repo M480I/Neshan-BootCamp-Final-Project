@@ -1,4 +1,4 @@
-package com.etaxi.core.security.user.authorization.Dto;
+package com.etaxi.core.security.user.authorization.dto;
 
 import com.etaxi.core.security.user.User;
 import org.springframework.stereotype.Component;

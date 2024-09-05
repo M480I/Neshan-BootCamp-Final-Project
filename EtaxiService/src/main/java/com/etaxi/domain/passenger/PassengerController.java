@@ -1,9 +1,8 @@
 package com.etaxi.domain.passenger;
 
-import com.etaxi.domain.driver.Dto.DriverCreateRequest;
-import com.etaxi.domain.driver.Dto.DriverCreateResponse;
-import com.etaxi.domain.passenger.Dto.PassengerCreateRequest;
-import com.etaxi.domain.passenger.Dto.PassengerCreateResponse;
+import com.etaxi.domain.order.Order;
+import com.etaxi.domain.passenger.dto.PassengerCreateRequest;
+import com.etaxi.domain.passenger.dto.PassengerCreateResponse;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/passenger")
@@ -30,5 +31,8 @@ public class PassengerController {
     ) {
         return ResponseEntity.ok(passengerService.createPassenger(passengerRequest, authentication));
     }
+
+    @PostMapping("/list-orders")
+    ResponseEntity<List<Order>>
 
 }

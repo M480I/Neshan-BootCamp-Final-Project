@@ -1,7 +1,7 @@
 package com.etaxi.domain.driver;
 
-import com.etaxi.domain.driver.Dto.DriverCreateRequest;
-import com.etaxi.domain.driver.Dto.DriverCreateResponse;
+import com.etaxi.domain.driver.dto.DriverCreateRequest;
+import com.etaxi.domain.driver.dto.DriverCreateResponse;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
