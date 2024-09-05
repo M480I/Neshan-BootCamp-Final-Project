@@ -37,7 +37,7 @@ public class Driver {
     @Enumerated(EnumType.STRING)
     Gender gender;
 
-    @Column(columnDefinition = "geometry")
+//    @Column(columnDefinition = "geometry")
     Point location;
 
 }
