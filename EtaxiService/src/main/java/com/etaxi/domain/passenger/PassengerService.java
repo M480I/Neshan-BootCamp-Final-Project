@@ -10,7 +10,10 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +34,14 @@ public class PassengerService {
         passenger.setUser(user);
         user.setRole(Role.PASSENGER);
         passengerRepository.save(passenger);
-        return passengerMapper.PassengerToPassengerResponse(passenger);
+        return passengerMapper.passengerToPassengerResponse(passenger);
+    }
+
+    public Passenger loadByUserUsername(String username) {
+        Optional<Passenger> passenger = passengerRepository.findByUserUsername(username);
+        if (passenger.isPresent())
+            return passenger.get();
+        throw new UsernameNotFoundException("username not found");
     }
 
 }

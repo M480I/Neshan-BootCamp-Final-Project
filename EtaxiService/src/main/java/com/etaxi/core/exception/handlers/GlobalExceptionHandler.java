@@ -2,6 +2,7 @@ package com.etaxi.core.exception.handlers;
 
 import com.etaxi.core.exception.ApiError;
 import com.etaxi.core.exception.EntityNotFoundException;
+import com.etaxi.core.exception.HasActiveOrderException;
 import com.etaxi.core.exception.InvalidUsernameException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -54,6 +56,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiError<String>> handleMethodNotSupported(
+            HttpRequestMethodNotSupportedException exception
+    ) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        ApiError<String> apiError = new ApiError<>(
+                exception.getMessage(),
+                httpStatus
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiError<String>> handleBadCredential(
             BadCredentialsException exception
@@ -69,7 +83,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             HttpMessageNotReadableException.class,
             EntityNotFoundException.class,
-            InvalidUsernameException.class
+            InvalidUsernameException.class,
+            HasActiveOrderException.class
     })
     public ResponseEntity<ApiError<String>> handleRuntimeExtendedExceptions(
             RuntimeException exception
@@ -81,5 +96,4 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
-
 }

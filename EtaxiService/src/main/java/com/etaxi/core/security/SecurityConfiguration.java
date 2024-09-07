@@ -42,6 +42,7 @@ public class SecurityConfiguration {
                         registry.requestMatchers("/passenger/**").hasRole(Role.PASSENGER.name());
                         registry.requestMatchers("/driver/signup").hasRole(Role.NULL.name());
                         registry.requestMatchers("/driver/**").hasRole(Role.DRIVER.name());
+                        registry.requestMatchers("/order/passenger/**").hasRole(Role.PASSENGER.name());
                         registry.anyRequest().authenticated();
                 })
                 .httpBasic(Customizer.withDefaults())

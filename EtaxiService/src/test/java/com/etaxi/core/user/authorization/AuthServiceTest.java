@@ -21,6 +21,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
+
 
 @SpringBootTest
 public class AuthServiceTest {
@@ -58,7 +60,8 @@ public class AuthServiceTest {
         when(authMapper.signupRequestToUser(userSignupRequest)).thenReturn(user);
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(user);
-        when(authMapper.userToSignupResponse(any(User.class))).thenReturn(new UserResponse("testUser"));
+        when(authMapper.userToSignupResponse(any(User.class))).
+                thenReturn(new UserResponse("testUser", LocalDateTime.now()));
 
         // Act
         UserResponse response = authService.createUser(userSignupRequest);

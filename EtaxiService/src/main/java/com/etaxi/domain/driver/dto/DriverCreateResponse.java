@@ -1,8 +1,10 @@
 package com.etaxi.domain.driver.dto;
 
 import com.etaxi.core.enums.Gender;
-import com.etaxi.core.location.LocationPair;
+import com.etaxi.core.location.PointSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Builder;
+import org.locationtech.jts.geom.Point;
 
 @Builder
 public record DriverCreateResponse(
@@ -11,6 +13,8 @@ public record DriverCreateResponse(
         String transportationTitle,
         String contactInfo,
         Gender gender,
-        LocationPair locationPair
+        @JsonSerialize(using = PointSerializer.class)
+        Point location,
+        Boolean isAvailable
 ) {
 }

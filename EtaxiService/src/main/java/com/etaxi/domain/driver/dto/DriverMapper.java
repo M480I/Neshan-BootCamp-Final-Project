@@ -14,7 +14,7 @@ public class DriverMapper {
 
     LocationMapper locationMapper;
 
-    public Driver DriverRequestToDriver(DriverCreateRequest driverCreateRequest) {
+    public Driver driverRequestToDriver(DriverCreateRequest driverCreateRequest) {
 
         return Driver.builder()
                 .name(driverCreateRequest.getName())
@@ -24,7 +24,7 @@ public class DriverMapper {
                 .build();
     }
 
-    public DriverCreateResponse DriverToDriverResponse(Driver driver) {
+    public DriverCreateResponse driverToDriverResponse(Driver driver) {
         String transportationTitle = null;
         if (driver.getTransportation() != null)
             transportationTitle = driver.getTransportation().getTitle();
@@ -34,7 +34,8 @@ public class DriverMapper {
                 .gender(driver.getGender())
                 .transportationTitle(transportationTitle)
                 .contactInfo(driver.getContactInfo())
-                .locationPair(locationMapper.pointToLocationPair(driver.getLocation()))
+                .location(driver.getLocation())
+                .isAvailable(driver.getIsAvailable())
                 .build();
     }
 

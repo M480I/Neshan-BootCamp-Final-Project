@@ -39,7 +39,7 @@ public class User implements UserDetails {
     LocalDateTime dateJoined;
 
     @PrePersist
-    public void prePersist() {
+    private void prePersist() {
         if (role == null) {
             role = Role.NULL;
         }

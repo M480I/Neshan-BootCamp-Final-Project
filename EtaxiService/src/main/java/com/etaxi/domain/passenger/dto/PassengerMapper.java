@@ -15,7 +15,7 @@ public class PassengerMapper {
                 .build();
     }
 
-    public PassengerCreateResponse PassengerToPassengerResponse(Passenger passenger) {
+    public PassengerCreateResponse passengerToPassengerResponse(Passenger passenger) {
         return PassengerCreateResponse.builder()
                 .username(passenger.getUser().getUsername())
                 .name(passenger.getName())

@@ -31,4 +31,6 @@ config:
     token-first-index: 7
     secret-key:
       5b1973e61feab8c503d02380dafac6e2b4d9c44a5415ea6d03bea77804f2dc50
-    token-duration: 20
+    token-duration: 10000000000000
+  order:
+    driver-search-radius: 1000
