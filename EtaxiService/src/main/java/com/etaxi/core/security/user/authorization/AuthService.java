@@ -6,8 +6,8 @@ import com.etaxi.core.security.token.JwtMapper;
 import com.etaxi.core.security.token.JwtResponse;
 import com.etaxi.core.security.token.JwtService;
 import com.etaxi.core.security.user.User;
+import com.etaxi.core.security.user.UserService;
 import com.etaxi.core.security.user.authorization.dto.AuthMapper;
-import com.etaxi.core.security.user.UserRepository;
 import com.etaxi.core.security.user.authorization.dto.UserLoginRequest;
 import com.etaxi.core.security.user.authorization.dto.UserResponse;
 import com.etaxi.core.security.user.authorization.dto.UserSignupRequest;
@@ -31,7 +31,7 @@ public class AuthService {
 
     AuthMapper authMapper;
     PasswordEncoder passwordEncoder;
-    UserRepository userRepository;
+    UserService userService;
     AuthenticationManager authenticationManager;
     JwtService jwtService;
     JwtMapper jwtMapper;
@@ -41,13 +41,10 @@ public class AuthService {
 
         User user = authMapper.signupRequestToUser(userRequest);
 
-        try {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-        }
-        catch (Exception exception) {
-            throw new InvalidUsernameException("Username is Invalid");
-        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        userService.createUser(user);
+
         return authMapper.userToSignupResponse(user);
     }
 

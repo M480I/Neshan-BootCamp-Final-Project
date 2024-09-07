@@ -1,5 +1,6 @@
 package com.etaxi.core.security.user;
 
+import com.etaxi.core.exception.InvalidUsernameException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,6 +18,14 @@ public class UserService implements UserDetailsService {
 
     UserRepository userRepository;
 
+    public void createUser(User user) {
+        try {
+            userRepository.save(user);
+        }
+        catch (Exception exception) {
+            throw new InvalidUsernameException("Username is Invalid");
+        }
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

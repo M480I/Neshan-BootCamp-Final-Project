@@ -3,7 +3,7 @@ package com.etaxi.core.dto;
 import lombok.Builder;
 
 @Builder
-public record apiResponse<T>(
+public record ApiResponse<T>(
         String message,
         T content
 ) {

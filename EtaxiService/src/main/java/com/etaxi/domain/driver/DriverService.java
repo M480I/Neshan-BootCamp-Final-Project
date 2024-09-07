@@ -47,6 +47,11 @@ public class DriverService {
         return driverMapper.driverToDriverResponse(driver);
     }
 
+    public void updateIsAvailable(Driver driver, Boolean isAvailable) {
+        driver.setIsAvailable(isAvailable);
+        driverRepository.save(driver);
+    }
+
     public Optional<Driver> findNearestDriver(
             Point location,
             Transportation transportation) {

@@ -1,9 +1,6 @@
 package com.etaxi.core.exception.handlers;
 
-import com.etaxi.core.exception.ApiError;
-import com.etaxi.core.exception.EntityNotFoundException;
-import com.etaxi.core.exception.HasActiveOrderException;
-import com.etaxi.core.exception.InvalidUsernameException;
+import com.etaxi.core.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -84,7 +81,9 @@ public class GlobalExceptionHandler {
             HttpMessageNotReadableException.class,
             EntityNotFoundException.class,
             InvalidUsernameException.class,
-            HasActiveOrderException.class
+            HasActiveOrderException.class,
+            MultiplePaymentException.class,
+            PaymentAuthenticationException.class
     })
     public ResponseEntity<ApiError<String>> handleRuntimeExtendedExceptions(
             RuntimeException exception

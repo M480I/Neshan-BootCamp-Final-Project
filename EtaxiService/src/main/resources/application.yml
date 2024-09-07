@@ -1,3 +1,5 @@
+server:
+  port: 8080
 spring:
   application:
     name: etaxi
@@ -16,6 +18,11 @@ spring:
           org.hibernate.spatial.dialect.postgis.PostgisPG95Dialect
         # noinspection undefined
         format_sql: true
+  rabbitmq:
+    host: localhost
+    username: guest
+    password: guest
+    port: 5672
 
 #logging:
 #  level:
@@ -23,8 +30,6 @@ spring:
 #      springframework:
 #        security:
 #          trace
-
-
 
 config:
   security:
@@ -34,3 +39,22 @@ config:
     token-duration: 10000000000000
   order:
     driver-search-radius: 1000
+  rabbitmq:
+    exchange:
+      exchange
+    sms-properties:
+      create-order-queue:
+        create_order_queue
+      payment-queue:
+        payment_queue
+      create-order-routing-key:
+        create.order
+      payment-routing-key:
+        payment
+    logger-properties:
+      logger-queue:
+        logger_queue
+      logger-routing-key:
+        '#'
+
+

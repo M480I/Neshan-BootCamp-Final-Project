@@ -1,11 +1,11 @@
 package com.etaxi.domain.order;
 
-import com.etaxi.core.dto.apiResponse;
+import com.etaxi.core.dto.ApiResponse;
+import com.etaxi.core.exception.EntityNotFoundException;
 import com.etaxi.core.exception.HasActiveOrderException;
 import com.etaxi.core.location.LocationMapper;
 import com.etaxi.core.location.LocationUtils;
 import com.etaxi.domain.driver.Driver;
-import com.etaxi.domain.driver.DriverRepository;
 import com.etaxi.domain.driver.DriverService;
 import com.etaxi.domain.order.dto.OrderCreateRequest;
 import com.etaxi.domain.order.dto.OrderMapper;
@@ -18,7 +18,6 @@ import com.etaxi.domain.transportation.TransportationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.java.Log;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +28,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@Log
 public class OrderService {
 
     OrderRepository orderRepository;
     PassengerService passengerService;
-    DriverRepository driverRepository;
     DriverService driverService;
     OrderMapper orderMapper;
     LocationMapper locationMapper;
@@ -51,6 +48,18 @@ public class OrderService {
             Double distance,
             Double speed) {
         return ((distance / 1000) / speed) * 60;
+    }
+
+    public Order loadOrderById(int id) {
+        Optional<Order> order = orderRepository.findById(id);
+        if (order.isPresent())
+            return order.get();
+        throw new EntityNotFoundException("Order with this id doesn't exist");
+    }
+
+    public void updateIsPayed(Order order, boolean isPayed) {
+        order.setIsPayed(isPayed);
+        orderRepository.save(order);
     }
 
     public List<OrderResponse> loadOrdersByPassenger(
@@ -75,7 +84,7 @@ public class OrderService {
         );
     }
 
-    public apiResponse<OrderResponse> createOrder(
+    public ApiResponse<OrderResponse> createOrder(
             OrderCreateRequest orderRequest,
             Authentication authentication) {
 
@@ -95,7 +104,7 @@ public class OrderService {
         );
 
         if (optionalDriver.isEmpty()) {
-            return new apiResponse<OrderResponse>(
+            return new ApiResponse<OrderResponse>(
               "couldn't find driver is the area",
               null
             );
@@ -109,8 +118,6 @@ public class OrderService {
                 order.getDestination()
         );
 
-        log.info(distance.toString());
-
         order.setTransportation(transportation);
         order.setPassenger(passenger);
         order.setDriver(driver);
@@ -122,13 +129,13 @@ public class OrderService {
                 distance,
                 transportation.getSpeed()
         ));
-        driver.setIsAvailable(false);
-        driverRepository.save(driver);
+
+        driverService.updateIsAvailable(driver, false);
         orderRepository.save(order);
 
-        return new apiResponse<OrderResponse>(
+        return new ApiResponse<OrderResponse>(
                 "driver found, order created",
-                orderMapper.orderDriverTransportationToOrderResponse(
+                new OrderResponse(
                         order,
                         driver,
                         transportation.getTitle())

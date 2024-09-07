@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 import com.etaxi.core.exception.InvalidUsernameException;
 import com.etaxi.core.security.token.*;
 import com.etaxi.core.security.user.User;
+import com.etaxi.core.security.user.UserService;
 import com.etaxi.core.security.user.authorization.dto.AuthMapper;
 import com.etaxi.core.security.user.UserRepository;
 import com.etaxi.core.security.user.authorization.AuthService;
@@ -35,6 +36,9 @@ public class AuthServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private UserService userService;
 
     @Mock
     private AuthenticationManager authenticationManager;
@@ -71,7 +75,7 @@ public class AuthServiceTest {
         assertEquals(response.username(), "testUser");
         verify(authMapper).signupRequestToUser(userSignupRequest);
         verify(passwordEncoder).encode("password");
-        verify(userRepository).save(user);
+        verify(userService).createUser(user);
         verify(authMapper).userToSignupResponse(user);
     }
 
@@ -86,13 +90,13 @@ public class AuthServiceTest {
 
         when(authMapper.signupRequestToUser(userSignupRequest)).thenReturn(user);
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
-        doThrow(new RuntimeException("Duplicate key")).when(userRepository).save(any(User.class));
+        doThrow(new InvalidUsernameException("Duplicate key")).when(userService).createUser(any(User.class));
 
         // Act and Assert
         assertThrows(InvalidUsernameException.class, () -> authService.createUser(userSignupRequest));
         verify(authMapper).signupRequestToUser(userSignupRequest);
         verify(passwordEncoder).encode("password");
-        verify(userRepository).save(user);
+        verify(userService).createUser(user);
     }
 
     @Test

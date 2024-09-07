@@ -39,23 +39,4 @@ public class OrderMapper {
                 .build();
     }
 
-    public OrderResponse orderDriverTransportationToOrderResponse(
-            Order order,
-            Driver driver,
-            String transportationTitle) {
-        return OrderResponse.builder()
-                .id(order.getId())
-                .driverName(driver.getName())
-                .driverContactInfo(driver.getContactInfo())
-                .source(order.getSource())
-                .destination(order.getDestination())
-                .transportationTitle(transportationTitle)
-                .date(order.getDate())
-                .cost(order.getCost())
-                .approximateDuration(order.getApproximateDuration())
-                .isPayed(order.getIsPayed())
-                .isDone(order.getIsDone())
-                .build();
-    }
-
 }

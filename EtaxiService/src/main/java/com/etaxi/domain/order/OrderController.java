@@ -1,9 +1,9 @@
 package com.etaxi.domain.order;
 
-import com.etaxi.core.dto.apiResponse;
+import com.etaxi.core.dto.ApiResponse;
 import com.etaxi.domain.order.dto.OrderCreateRequest;
 import com.etaxi.domain.order.dto.OrderResponse;
-import com.etaxi.domain.passenger.PassengerService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,7 +20,6 @@ import java.util.List;
 public class OrderController {
 
     OrderService orderService;
-    PassengerService passengerService;
 
     @GetMapping("/passenger/list-orders")
     public ResponseEntity<List<OrderResponse>> getOrdersList(
@@ -36,8 +35,8 @@ public class OrderController {
     }
 
     @PostMapping("/passenger/request-order")
-    public ResponseEntity<apiResponse<OrderResponse>> requestOrder(
-            @RequestBody OrderCreateRequest orderRequest,
+    public ResponseEntity<ApiResponse<OrderResponse>> requestOrder(
+            @Valid @RequestBody OrderCreateRequest orderRequest,
             Authentication authentication
             ) {
         return ResponseEntity.ok(orderService.createOrder(orderRequest, authentication));
