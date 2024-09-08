@@ -39,4 +39,15 @@ public class OrderMapper {
                 .build();
     }
 
+    public OrderSmsDto orderToOrderSmsDto(Order order) {
+        return OrderSmsDto.builder()
+                .passengerId(order.getPassenger().getId())
+                .driverId(order.getDriver().getId())
+                .transportationTitle(order.getTransportation().getTitle())
+                .cost(order.getCost())
+                .approximateDuration(order.getApproximateDuration())
+                .date(order.getDate())
+                .build();
+    }
+
 }

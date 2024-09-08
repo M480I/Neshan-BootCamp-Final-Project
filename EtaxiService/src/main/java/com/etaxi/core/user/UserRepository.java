@@ -1,4 +1,4 @@
-package com.etaxi.core.security.user;
+package com.etaxi.core.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

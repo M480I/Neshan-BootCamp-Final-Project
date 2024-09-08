@@ -5,22 +5,27 @@ import com.etaxi.domain.passenger.Passenger;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PaymentResponse {
+public class PaymentSmsDto {
 
-    String name;
-
-    Integer orderId;
+    Integer passenger_id;
 
     Double cost;
 
-    public PaymentResponse(Order order, Passenger passenger) {
-        name = passenger.getName();
-        orderId = order.getId();
+    Integer order_id;
+
+    LocalDateTime date;
+
+    public PaymentSmsDto(Order order, Passenger passenger) {
+        passenger_id = passenger.getId();
         cost = order.getCost();
+        order_id = order.getId();
+        date = order.getDate();
     }
 
 }

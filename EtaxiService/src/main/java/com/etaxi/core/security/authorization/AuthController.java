@@ -1,9 +1,9 @@
-package com.etaxi.core.security.user.authorization;
+package com.etaxi.core.security.authorization;
 
+import com.etaxi.core.security.authorization.dto.AuthLoginRequest;
+import com.etaxi.core.security.authorization.dto.AuthResponse;
+import com.etaxi.core.security.authorization.dto.AuthSignupRequest;
 import com.etaxi.core.security.token.JwtResponse;
-import com.etaxi.core.security.user.authorization.dto.UserLoginRequest;
-import com.etaxi.core.security.user.authorization.dto.UserResponse;
-import com.etaxi.core.security.user.authorization.dto.UserSignupRequest;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +23,13 @@ public class AuthController {
     AuthService authService;
 
     @PostMapping("/signup")
-    ResponseEntity<UserResponse> signup(@Valid @RequestBody UserSignupRequest userRequest) {
-        return ResponseEntity.ok(authService.createUser(userRequest));
+    ResponseEntity<AuthResponse> signup(@Valid @RequestBody AuthSignupRequest authRequest) {
+        return ResponseEntity.ok(authService.createUser(authRequest));
     }
 
     @PostMapping("/login")
-    ResponseEntity<JwtResponse> login(@Valid  @RequestBody UserLoginRequest userRequest) {
-        return ResponseEntity.ok(authService.getJwt(userRequest));
+    ResponseEntity<JwtResponse> login(@Valid  @RequestBody AuthLoginRequest authRequest) {
+        return ResponseEntity.ok(authService.getJwt(authRequest));
     }
 
 }

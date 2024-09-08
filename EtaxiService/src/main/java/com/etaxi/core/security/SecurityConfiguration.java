@@ -1,6 +1,6 @@
 package com.etaxi.core.security;
 
-import com.etaxi.core.security.user.Role;
+import com.etaxi.core.user.Role;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

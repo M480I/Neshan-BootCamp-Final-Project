@@ -5,6 +5,9 @@ import com.etaxi.core.exception.EntityNotFoundException;
 import com.etaxi.core.exception.HasActiveOrderException;
 import com.etaxi.core.location.LocationMapper;
 import com.etaxi.core.location.LocationUtils;
+import com.etaxi.core.rabbitmq.logger.LogDto;
+import com.etaxi.core.rabbitmq.logger.LoggerProducer;
+import com.etaxi.core.rabbitmq.sms.SmsProducer;
 import com.etaxi.domain.driver.Driver;
 import com.etaxi.domain.driver.DriverService;
 import com.etaxi.domain.order.dto.OrderCreateRequest;
@@ -21,6 +24,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,6 +41,8 @@ public class OrderService {
     LocationMapper locationMapper;
     TransportationService transportationService;
     LocationUtils locationUtils;
+    SmsProducer smsProducer;
+    LoggerProducer logger;
 
     private Double calculateCost(
             Double distance,
@@ -60,6 +66,12 @@ public class OrderService {
     public void updateIsPayed(Order order, boolean isPayed) {
         order.setIsPayed(isPayed);
         orderRepository.save(order);
+        logger.storeLog(
+                LogDto.builder()
+                        .date(LocalDateTime.now())
+                        .message(String.format("Order with Id=%d isPayed update", order.getId()))
+                        .build()
+        );
     }
 
     public List<OrderResponse> loadOrdersByPassenger(
@@ -132,6 +144,14 @@ public class OrderService {
 
         driverService.updateIsAvailable(driver, false);
         orderRepository.save(order);
+
+        smsProducer.createOrder(orderMapper.orderToOrderSmsDto(order));
+        logger.storeLog(
+                LogDto.builder()
+                        .date(LocalDateTime.now())
+                        .message(String.format("New Order with Id=%d create", order.getId()))
+                        .build()
+        );
 
         return new ApiResponse<OrderResponse>(
                 "driver found, order created",

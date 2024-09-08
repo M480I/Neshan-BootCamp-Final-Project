@@ -31,30 +31,34 @@ spring:
 #        security:
 #          trace
 
+# noinspection undefined
 config:
   security:
     token-first-index: 7
     secret-key:
       5b1973e61feab8c503d02380dafac6e2b4d9c44a5415ea6d03bea77804f2dc50
-    token-duration: 10000000000000
+    token-duration: 60
   order:
-    driver-search-radius: 1000
+    driver-search-radius: 2000
   rabbitmq:
-    exchange:
-      exchange
     sms-properties:
+      sms-exchange:
+        sms_exchange
       create-order-queue:
         create_order_queue
       payment-queue:
         payment_queue
+      create-passenger-driver-queue:
+        create_passenger_driver_queue
       create-order-routing-key:
         create.order
       payment-routing-key:
         payment
+      create-passenger-driver-routing-key:
+        create.passenger.driver
+
     logger-properties:
+      logger-exchange:
+        logger_exchange
       logger-queue:
         logger_queue
-      logger-routing-key:
-        '#'
-
-

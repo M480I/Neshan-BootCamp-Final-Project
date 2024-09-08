@@ -1,4 +1,4 @@
-package com.etaxi.core.security.user;
+package com.etaxi.core.user;
 
 public enum Role {
     NULL,

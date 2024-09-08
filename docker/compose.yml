@@ -10,6 +10,26 @@ services:
       POSTGRES_PASSWORD: admin
     networks:
       - etaxi
+  postgresql1:
+    image: postgres
+    ports:
+      - "5433:5433"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      PGPORT: 5433
+    networks:
+      - etaxi
+  postgresql2:
+    image: postgres
+    ports:
+      - "5434:5434"
+    environment:
+      PGPORT: 5434
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    networks:
+      - etaxi
   pgadmin:
     image: dpage/pgadmin4
     ports:

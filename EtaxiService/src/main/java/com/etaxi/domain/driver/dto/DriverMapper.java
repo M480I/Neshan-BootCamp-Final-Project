@@ -1,6 +1,7 @@
 package com.etaxi.domain.driver.dto;
 
 import com.etaxi.core.location.LocationMapper;
+import com.etaxi.core.user.UserSmsDto;
 import com.etaxi.domain.driver.Driver;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,14 @@ public class DriverMapper {
                 .contactInfo(driver.getContactInfo())
                 .location(driver.getLocation())
                 .isAvailable(driver.getIsAvailable())
+                .build();
+    }
+
+    public UserSmsDto driverToDriverSmsDto(Driver driver) {
+        return UserSmsDto.builder()
+                .id(driver.getId())
+                .name(driver.getName())
+                .contactInfo(driver.getContactInfo())
                 .build();
     }
 

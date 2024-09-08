@@ -1,8 +1,7 @@
 package com.etaxi.domain.driver;
 
-import com.etaxi.core.security.user.User;
+import com.etaxi.core.user.User;
 import com.etaxi.domain.transportation.Transportation;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

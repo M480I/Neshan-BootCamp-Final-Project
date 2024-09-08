@@ -5,14 +5,14 @@ import static org.mockito.Mockito.*;
 
 import com.etaxi.core.exception.InvalidUsernameException;
 import com.etaxi.core.security.token.*;
-import com.etaxi.core.security.user.User;
-import com.etaxi.core.security.user.UserService;
-import com.etaxi.core.security.user.authorization.dto.AuthMapper;
-import com.etaxi.core.security.user.UserRepository;
-import com.etaxi.core.security.user.authorization.AuthService;
-import com.etaxi.core.security.user.authorization.dto.UserLoginRequest;
-import com.etaxi.core.security.user.authorization.dto.UserSignupRequest;
-import com.etaxi.core.security.user.authorization.dto.UserResponse;
+import com.etaxi.core.user.User;
+import com.etaxi.core.user.UserService;
+import com.etaxi.core.security.authorization.dto.AuthMapper;
+import com.etaxi.core.user.UserRepository;
+import com.etaxi.core.security.authorization.AuthService;
+import com.etaxi.core.security.authorization.dto.AuthLoginRequest;
+import com.etaxi.core.security.authorization.dto.AuthSignupRequest;
+import com.etaxi.core.security.authorization.dto.AuthResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -55,25 +55,25 @@ public class AuthServiceTest {
     @Test
     void createUser_success() throws InvalidUsernameException {
         // Arrange
-        UserSignupRequest userSignupRequest = new UserSignupRequest("testUser", "password");
+        AuthSignupRequest authSignupRequest = new AuthSignupRequest("testUser", "password");
         User user = User.builder()
                 .username("testUser")
                 .password("password")
                 .build();
 
-        when(authMapper.signupRequestToUser(userSignupRequest)).thenReturn(user);
+        when(authMapper.signupRequestToUser(authSignupRequest)).thenReturn(user);
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         when(userRepository.save(any(User.class))).thenReturn(user);
         when(authMapper.userToSignupResponse(any(User.class))).
-                thenReturn(new UserResponse("testUser", LocalDateTime.now()));
+                thenReturn(new AuthResponse("testUser", LocalDateTime.now()));
 
         // Act
-        UserResponse response = authService.createUser(userSignupRequest);
+        AuthResponse response = authService.createUser(authSignupRequest);
 
         // Assert
         assertNotNull(response);
         assertEquals(response.username(), "testUser");
-        verify(authMapper).signupRequestToUser(userSignupRequest);
+        verify(authMapper).signupRequestToUser(authSignupRequest);
         verify(passwordEncoder).encode("password");
         verify(userService).createUser(user);
         verify(authMapper).userToSignupResponse(user);
@@ -82,19 +82,19 @@ public class AuthServiceTest {
     @Test
     void createUser_invalidUsernameException() {
         // Arrange
-        UserSignupRequest userSignupRequest = new UserSignupRequest("testUser", "password");
+        AuthSignupRequest authSignupRequest = new AuthSignupRequest("testUser", "password");
         User user = User.builder()
                         .username("testUser")
                         .password("password")
                         .build();
 
-        when(authMapper.signupRequestToUser(userSignupRequest)).thenReturn(user);
+        when(authMapper.signupRequestToUser(authSignupRequest)).thenReturn(user);
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         doThrow(new InvalidUsernameException("Duplicate key")).when(userService).createUser(any(User.class));
 
         // Act and Assert
-        assertThrows(InvalidUsernameException.class, () -> authService.createUser(userSignupRequest));
-        verify(authMapper).signupRequestToUser(userSignupRequest);
+        assertThrows(InvalidUsernameException.class, () -> authService.createUser(authSignupRequest));
+        verify(authMapper).signupRequestToUser(authSignupRequest);
         verify(passwordEncoder).encode("password");
         verify(userService).createUser(user);
     }
@@ -102,7 +102,7 @@ public class AuthServiceTest {
     @Test
     void getJwt_success() {
         // Arrange
-        UserLoginRequest loginRequest = new UserLoginRequest("testUser", "password");
+        AuthLoginRequest loginRequest = new AuthLoginRequest("testUser", "password");
         User user = User.builder()
                 .username("testUser")
                 .password("password")
@@ -113,7 +113,7 @@ public class AuthServiceTest {
                 .thenReturn(authentication);
         when(authentication.isAuthenticated()).thenReturn(true);
         Jwt jwt = new Jwt("testToken", JwtStatus.VALID, null);
-        when(authMapper.loginRequestToUser(any(UserLoginRequest.class))).thenReturn(user);
+        when(authMapper.loginRequestToUser(any(AuthLoginRequest.class))).thenReturn(user);
         when(jwtService.generateToken(any(User.class))).thenReturn(jwt);
         JwtResponse jwtResponse = new JwtResponse("testToken", JwtStatus.VALID.name());
         when(jwtMapper.jwtToResponse(any(Jwt.class))).thenReturn(jwtResponse);

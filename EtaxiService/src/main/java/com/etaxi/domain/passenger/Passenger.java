@@ -1,8 +1,7 @@
 package com.etaxi.domain.passenger;
 
 import com.etaxi.core.enums.Gender;
-import com.etaxi.core.security.user.User;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.etaxi.core.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

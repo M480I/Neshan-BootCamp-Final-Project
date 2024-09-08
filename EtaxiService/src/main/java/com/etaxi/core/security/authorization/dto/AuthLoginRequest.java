@@ -1,4 +1,4 @@
-package com.etaxi.core.security.user.authorization.dto;
+package com.etaxi.core.security.authorization.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @Data
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserSignupRequest {
+public class AuthLoginRequest {
 
     @NotBlank(message = "username is required")
     @Email(message = "username should be an email")

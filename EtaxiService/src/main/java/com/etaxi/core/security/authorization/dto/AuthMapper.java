@@ -1,24 +1,24 @@
-package com.etaxi.core.security.user.authorization.dto;
+package com.etaxi.core.security.authorization.dto;
 
-import com.etaxi.core.security.user.User;
+import com.etaxi.core.user.User;
 import org.springframework.stereotype.Component;
 
 @Component
 public class AuthMapper {
 
-    public User signupRequestToUser(UserSignupRequest user) {
+    public User signupRequestToUser(AuthSignupRequest user) {
         return User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .build();
     }
-    public UserResponse userToSignupResponse(User user) {
-        return UserResponse.builder()
+    public AuthResponse userToSignupResponse(User user) {
+        return AuthResponse.builder()
                 .username(user.getUsername())
                 .dateJoined(user.getDateJoined())
                 .build();
     }
-    public User loginRequestToUser(UserLoginRequest user) {
+    public User loginRequestToUser(AuthLoginRequest user) {
         return User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword())

@@ -1,16 +1,18 @@
-package com.etaxi.core.security.user.authorization;
+package com.etaxi.core.security.authorization;
 
 import com.etaxi.core.exception.InvalidUsernameException;
+import com.etaxi.core.rabbitmq.logger.LogDto;
+import com.etaxi.core.rabbitmq.logger.LoggerProducer;
+import com.etaxi.core.security.authorization.dto.AuthLoginRequest;
+import com.etaxi.core.security.authorization.dto.AuthMapper;
+import com.etaxi.core.security.authorization.dto.AuthResponse;
+import com.etaxi.core.security.authorization.dto.AuthSignupRequest;
 import com.etaxi.core.security.token.Jwt;
 import com.etaxi.core.security.token.JwtMapper;
 import com.etaxi.core.security.token.JwtResponse;
 import com.etaxi.core.security.token.JwtService;
-import com.etaxi.core.security.user.User;
-import com.etaxi.core.security.user.UserService;
-import com.etaxi.core.security.user.authorization.dto.AuthMapper;
-import com.etaxi.core.security.user.authorization.dto.UserLoginRequest;
-import com.etaxi.core.security.user.authorization.dto.UserResponse;
-import com.etaxi.core.security.user.authorization.dto.UserSignupRequest;
+import com.etaxi.core.user.User;
+import com.etaxi.core.user.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -21,6 +23,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 
 @Service
@@ -35,31 +39,39 @@ public class AuthService {
     AuthenticationManager authenticationManager;
     JwtService jwtService;
     JwtMapper jwtMapper;
+    LoggerProducer logger;
 
-    public UserResponse createUser(UserSignupRequest userRequest)
+    public AuthResponse createUser(AuthSignupRequest authRequest)
             throws InvalidUsernameException {
 
-        User user = authMapper.signupRequestToUser(userRequest);
+        User user = authMapper.signupRequestToUser(authRequest);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         userService.createUser(user);
 
+        logger.storeLog(
+                LogDto.builder()
+                        .date(LocalDateTime.now())
+                        .message(String.format("New User with Id=%d signup", user.getId()))
+                        .build()
+        );
+
         return authMapper.userToSignupResponse(user);
     }
 
-    public JwtResponse getJwt(UserLoginRequest user)
+    public JwtResponse getJwt(AuthLoginRequest authRequest)
             throws BadCredentialsException {
 
         Authentication authentication =
                 authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
-                                user.getUsername(),
-                                user.getPassword()
+                                authRequest.getUsername(),
+                                authRequest.getPassword()
                         )
                 );
         if (authentication.isAuthenticated()) {
-            Jwt jwt = jwtService.generateToken(authMapper.loginRequestToUser(user));
+            Jwt jwt = jwtService.generateToken(authMapper.loginRequestToUser(authRequest));
             return jwtMapper.jwtToResponse(jwt);
         }
 
