@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 public class RedisConfig {
 
     @Bean
-    RedissonClient redissonClientBean() {
+    RedissonClient getRedissonClient() {
         Config config = new Config();
         config.useSingleServer()
                 .setAddress("redis://127.0.0.1:6379");
