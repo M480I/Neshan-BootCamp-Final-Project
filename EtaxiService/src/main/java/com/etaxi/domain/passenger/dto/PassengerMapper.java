@@ -1,6 +1,7 @@
 package com.etaxi.domain.passenger.dto;
 
-import com.etaxi.core.user.UserSmsDto;
+import com.etaxi.core.user.dto.UserSmsDto;
+import com.etaxi.core.user.dto.UserSmsMode;
 import com.etaxi.domain.passenger.Passenger;
 import org.springframework.stereotype.Component;
 
@@ -28,6 +29,7 @@ public class PassengerMapper {
 
     public UserSmsDto passengerToPassengerSmsDto(Passenger passenger) {
         return UserSmsDto.builder()
+                .mode(UserSmsMode.PASSENGER)
                 .id(passenger.getId())
                 .name(passenger.getName())
                 .contactInfo(passenger.getContactInfo())

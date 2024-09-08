@@ -1,7 +1,7 @@
 package com.etaxi.core.rabbitmq.sms;
 
 import com.etaxi.core.rabbitmq.RabbitmqProperties;
-import com.etaxi.core.user.UserSmsDto;
+import com.etaxi.core.user.dto.UserSmsDto;
 import com.etaxi.domain.order.dto.OrderSmsDto;
 import com.etaxi.domain.payment.dto.PaymentSmsDto;
 import lombok.AccessLevel;

@@ -1,7 +1,6 @@
 package com.etaxi.domain.order.dto;
 
 import com.etaxi.core.location.LocationMapper;
-import com.etaxi.domain.driver.Driver;
 import com.etaxi.domain.order.Order;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

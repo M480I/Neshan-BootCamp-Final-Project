@@ -1,0 +1,40 @@
+server:
+  port: 8181
+spring:
+  application:
+    name: sms
+  datasource:
+    url: jdbc:postgresql://localhost:5433/admin
+    username: admin
+    password: admin
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  rabbitmq:
+    host: localhost
+    username: guest
+    password: guest
+    port: 5672
+
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security:
+#          trace
+
+# noinspection undefined
+config:
+  rabbitmq:
+    create-order-queue:
+      create_order_queue
+    payment-queue:
+      payment_queue
+    create-passenger-driver-queue:
+      create_passenger_driver_queue
