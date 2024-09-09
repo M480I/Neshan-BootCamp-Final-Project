@@ -23,7 +23,7 @@ public class SmsConsumer {
     UserService userService;
     UserMapper userMapper;
 
-    @RabbitListener(queues = {"${config.rabbitmq.create-order-queue}"}, priority = "2")
+    @RabbitListener(queues = {"${config.rabbitmq.create-order-queue}"}, priority = "500")
     public void notifyOrder(OrderSmsDto orderDto) {
         User passenger = userService.loadByModeIdAndMode(orderDto.passengerId(), UserSmsMode.PASSENGER);
         User driver = userService.loadByModeIdAndMode(orderDto.driverId(), UserSmsMode.DRIVER);
@@ -46,7 +46,7 @@ public class SmsConsumer {
                 ));
     }
 
-    @RabbitListener(queues = {"${config.rabbitmq.payment-queue}"}, priority = "3")
+    @RabbitListener(queues = {"${config.rabbitmq.payment-queue}"}, priority = "1")
     public void payment(PaymentSmsDto paymentDto) {
         User passenger = userService.loadByModeIdAndMode(paymentDto.getPassenger_id(), UserSmsMode.PASSENGER);
 
@@ -60,7 +60,7 @@ public class SmsConsumer {
                 ));
     }
 
-    @RabbitListener(queues = {"${config.rabbitmq.create-passenger-driver-queue}"}, priority = "1")
+    @RabbitListener(queues = {"${config.rabbitmq.create-passenger-driver-queue}"}, priority = "1000")
     public void createUser(UserSmsDto userSmsDto) {
         userService.createUser(userMapper.userSmsDtoToUser(userSmsDto));
     }
