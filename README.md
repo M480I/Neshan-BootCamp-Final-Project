@@ -1,3 +1,6 @@
+![Untitled1](https://github.com/user-attachments/assets/13d5366f-2f51-4697-8c7b-69851a6978ac)
+![Untitled](https://github.com/user-attachments/assets/6e13679b-f894-41df-bb13-571ca1ca8a98)
+
 # Electronic Taxi Service
 
 An electronic taxi service application built using Java Spring Boot, Postgres (with PostGIS extension), Redis, and RabbitMQ. This application handles geospatial data to match passengers with the closest available drivers and incorporates a fully-featured JWT authentication system with a two-stage login process.
