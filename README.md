@@ -50,13 +50,13 @@ An electronic taxi service application built using Java Spring Boot, Postgres (w
    ```
 2. Navigate into the project directory:
    ```bash
-   cd electronic-taxi-service
+   cd Neshan-BootCamp-Final-Project
    ```
 3. Set up the databases (PostgreSQL, PostGIS, Redis).
 4. Build and run the microservices:
    ```bash
    mvn clean install
-   docker-compose up
+   docker-compose up -d
    ```
 5. The application will now be available on the following ports:
    - Core Service: `http://localhost:8080`
